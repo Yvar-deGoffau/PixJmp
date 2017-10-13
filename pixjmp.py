@@ -255,7 +255,7 @@ class Player(Entity):
   except IndexError:
    pass
   if self.jump>0:
-   if keys[pygame.K_UP]:
+   if keys[pygame.K_UP] or keys[pygame.K_SPACE]:
     self.move(0,-1)
     if not self.beeper.get_busy():
      if self.jmpsound:
