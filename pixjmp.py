@@ -20,6 +20,7 @@ class Game:
 
   self.entities=[]
   self.font=Font()
+  self.time=0
    #this is the list of entities
   self.init()
   self.scrollx=self.scrolly=0
@@ -30,6 +31,7 @@ class Game:
 
  def update(self):
   #first, we update ourself
+  self.time+=1
   self.cheatdoupdate=False
   for event in pygame.event.get():
    if event.type==pygame.QUIT: #the user pressed on the button with the cross
@@ -122,6 +124,7 @@ class Game:
   if self.cheat:
    string+="CHEAT"
   string+="DEADS:"+str(self.player.deads)
+  string+=" TIME "+str((self.time/16)/60)+":"+str((self.time/16)%60).rjust(2,"0")+":"+str((self.time&15)*1000/16).rjust(3,"0")
   
   self.font.draw(self.screen,string,(1,0))
    #stretch the screen to the display
