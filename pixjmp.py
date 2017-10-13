@@ -203,6 +203,7 @@ class World(Entity):
   self.lvl=0 #modify this to start at another level
   self.reload_level()
   self.level.set_colorkey((0,0,0))
+  self.fallingblocks=[]
  def get_title(self):
   return self.titles[self.lvl][5:-4]
  def get_at(self,pos):
@@ -211,10 +212,16 @@ class World(Entity):
   if val==0:
    self.level.set_at(pos,(0,0,0))
   else:
-   x,y=pos
-   while not self.get_at((x,y+1)):
-    y+=1
-   self.level.set_at((x,y),(255,255,255))
+   self.fallingblocks.append(pos)
+   self.level.set_at(pos,(255,255,255))
+ def update(self):
+  for x,y in self.fallingblocks:
+   if y+1>=self.level.get_height():
+    self.set_at((x,y),0)
+   elif self.get_at((x,y+1))==0:
+    self.set_at((x,y),0)
+    self.set_at((x,y+1),1)
+   self.fallingblocks.remove((x,y))
  def next_level(self):
   self.lvl+=1
   self.reload_level()
