@@ -12,7 +12,7 @@ Trouble is, it also emulates the sheer difficulty!
 | ------- |:-----------------:|:-------:|:-----------------:|
 | `Left`  | **Go Left**       | `Right` | **Go Right**      |
 |         | Push Block Left   |         | Push Block Right  |
-| `Up`    | **Jump**          | `Enter` | **Restart Level** |
+| `Space` | **Jump**          | `Enter` | **Restart Level** |
 
 `Jumping` is special... you will see.
 
