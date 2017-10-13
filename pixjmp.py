@@ -22,6 +22,7 @@ class Game:
   self.font=Font()
    #this is the list of entities
   self.init()
+  self.scrollx=self.scrolly=0
 
  def reg_entity(self,entity):
   if entity not in self.entities: #security check
@@ -70,6 +71,22 @@ class Game:
   return results
 
  def render(self):
+  scrollx,scrolly=self.player.get_pos()
+  scrollx-=12
+  scrolly-=8
+  if scrollx>self.world.level.get_width()-24:
+   scrollx=self.world.level.get_width()-24
+  if scrolly>self.world.level.get_height()-16:
+   scrolly=self.world.level.get_height()-16
+  if scrollx<0:
+   scrollx=0
+  if scrolly<0:
+   scrolly=0
+  scrollx=-scrollx
+  scrolly=-scrolly
+  self.scrollx=(self.scrollx+scrollx)/2.0
+  self.scrolly=(self.scrolly+scrolly)/2.0
+
   #self.screen.fill((0,255,128))
    #first, render all entities
   for entity in self.entities:
@@ -80,7 +97,9 @@ class Game:
    x*=8
    y*=8
    y+=8
-    #if we want to do some scrolling, put the code here... no need for now
+    #if we want to do some scrolling, put the code here... 
+   x+=int(self.scrollx-0.5)*8
+   y+=int(self.scrolly-0.5)*8
     #and now, we blit the entity at the appropriete place
    self.screen.blit(surface,(x,y))
    #and last, we blit the text
@@ -210,6 +229,8 @@ class World(Entity):
     self.lvl+=1
     continue
   self.level.set_colorkey((0,0,0))
+  self.surface=pygame.Surface((self.level.get_width()*8,self.level.get_height()*8))
+  self.game.scrollx=self.game.scrolly=0
  def render(self):
   for y in range(self.level.get_height()):
    for x in range(self.level.get_width()):
@@ -263,7 +284,7 @@ class Player(Entity):
    self.jump-=1
   else:
    self.move(0,1)
-  if self.x>23:
+  if self.x>=self.game.world.level.get_width():
    self.x=self.y=1
    self.jump=0
    if self.winsound:
@@ -271,7 +292,7 @@ class Player(Entity):
    else:
     print "\b"
    self.game.world.next_level()
-  if self.y>15:
+  if self.y>=self.game.world.level.get_height():
    self.x=self.y=1
    self.deads+=1
    if self.diesound:
