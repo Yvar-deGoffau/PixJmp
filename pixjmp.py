@@ -249,6 +249,7 @@ class Player(Entity):
  def init(self,*args,**kwargs):
   self.x=self.y=1
   self.jump=0
+  self.push=0
   self.deads=0
   self.surface.fill((0,255,128))
   self.surface.fill((0,128,96),(2,2,8-2,8-2))
@@ -311,6 +312,9 @@ class Player(Entity):
  def move(self,xvect,yvect):
   x=self.x+xvect
   y=self.y+yvect
+  if self.push:
+   self.push=0
+   return
   #print x,y,
   try:
    if self.game.world.get_at((x,y)):
@@ -322,6 +326,8 @@ class Player(Entity):
        self.beeper.play(self.pshsound)
       else:
        print "\b"
+      self.push=1
+      return
      else:
       #print "#"
       return
