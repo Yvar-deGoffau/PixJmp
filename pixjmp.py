@@ -35,6 +35,18 @@ class Game:
    if event.type==pygame.QUIT: #the user pressed on the button with the cross
     pygame.quit()  #close the video subsystem
     sys.exit()  #and terminate the program
+   if event.type==pygame.ACTIVEEVENT:
+    if event.state==3:
+     waiting=True
+     while waiting:
+      pygame.display.flip()
+      pygame.display.set_caption("PAUSED")
+      for event in pygame.event.get():
+       if event.type==pygame.QUIT:
+        pygame.quit() 
+        sys.exit() 
+       if event.type==pygame.ACTIVEEVENT:
+        waiting=event.state==1
    if event.type==pygame.KEYDOWN:
     if event.key==pygame.K_ESCAPE:  #same thing
      pygame.quit()
@@ -123,6 +135,7 @@ class Game:
    self.update()
    self.render()
    clock.tick(16)
+   pygame.display.set_caption(str(((1000/clock.get_time())*",").ljust(16,".")))
 
 class Font:
  def __init__(self):
